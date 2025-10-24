@@ -13,10 +13,12 @@ public class FilaTortillas {
         System.out.println("Tortillas Tec");
         Persona inicioFila = null;
         do{
-            System.out.println("1...Nuevo Cliente");
-            System.out.println("2...Atender Cliente");
-            System.out.println("3...Cliente ENojado");
-            System.out.println("4...Terminar Servicio");
+            System.out.println("1...Nuevo Cliente ATRÁS");
+            System.out.println("2...Nuevo Cliente ADELANTE");
+            System.out.println("3...Atender Cliente");
+            System.out.println("4...Cliente Enojado");
+            System.out.println("5...Imprimir Inverso");
+            System.out.println("6...Terminar Servicio");
             opc = Integer.parseInt(sc.nextLine());
             switch (opc) {
             case 1:
@@ -35,12 +37,21 @@ public class FilaTortillas {
                 }
                 imprimirLista(inicioFila);    
                 break;
-            case 2:
+            case 2: 
+                    System.out.print("Dame un nombre: ");
+                    nombre = sc.nextLine();
+                    personaNueva = new Persona();
+                    personaNueva.nombre = nombre;
+                    personaNueva.vieneAtras = inicioFila;
+                    inicioFila = personaNueva;
+                    imprimirLista(inicioFila);
+                    break;
+            case 3:
                     if (inicioFila != null);
                     inicioFila = inicioFila.vieneAtras;
                     imprimirLista(inicioFila);
                     break;
-            case 3:
+            case 4:
                 System.out.println("A quien quieres eliminar?: ");
                 String elimina = sc.nextLine();
                 Persona buscado = inicioFila;
@@ -60,16 +71,35 @@ public class FilaTortillas {
                 }
                 
                 break;
-            case 4:
-                imprimirLista(inicioFila);
+            case 5:
+                java.util.Stack<String> pila = new java.util.Stack<>();
+                Persona actual = inicioFila;
+                while (actual != null) {
+                    pila.push(actual.nombre);
+                    actual = actual.vieneAtras;
+                }
+                System.out.println("Fila en orden inverso:");
+                while (!pila.isEmpty()) {
+                    System.out.println(pila.pop());
+                }
+                break;
+            case 6:
+                System.out.println("Terminando Servicio...");
+                int contador = 0;
+                while (inicioFila != null){
+                    contador ++;
+                    inicioFila = inicioFila.vieneAtras;
+                }
+                System.out.println("Las personas sin atender son " + contador);
                 break;
         }
-        }while (opc !=4);
+        }while (opc !=6);
     }
     public static void imprimirLista(Persona persona){
-        if (persona != null)
+        if (persona != null){
             System.out.println(persona.nombre);
             imprimirLista(persona.vieneAtras);
+        }
     }
 }
 
