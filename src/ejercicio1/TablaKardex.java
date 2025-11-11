@@ -1,10 +1,11 @@
 package ejercicio1;
 
 import ejercicio1.datos.KardexDatos;
-import static ejercicio1.datos.KardexDatos.datos;
 import static ejercicio1.datos.KardexDatos.index;
+import ejercicio1.datos.Materias;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import static ejercicio1.datos.KardexDatos.listasMaterias;
 
 /**
  *En este proyecto b
@@ -35,6 +36,7 @@ public class TablaKardex extends javax.swing.JFrame {
         btnAgregar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         btnModificar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,22 +72,29 @@ public class TablaKardex extends javax.swing.JFrame {
             }
         });
 
+        btnEliminar.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(35, 35, 35)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 740, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(52, 52, 52)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnAgregar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnModificar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
+                            .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 740, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(35, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -93,32 +102,25 @@ public class TablaKardex extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(38, 38, 38))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(91, 91, 91))))
+                .addGap(18, 18, 18)
+                .addComponent(btnAgregar)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnModificar)
+                    .addComponent(jLabel1))
+                .addGap(18, 18, 18)
+                .addComponent(btnEliminar)
+                .addContainerGap(54, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        if (index < datos.length) {
         AgregarCalificaciones dialog = new AgregarCalificaciones(this,true);
         dialog.setVisible(true);
         actualizarTabla();
         calcularPromedio();
-        //index++;
-        } else {
-                JOptionPane.showMessageDialog(null, "Ya se alcanzó el límite de registros (10).");
-    }
-
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
@@ -138,39 +140,60 @@ public class TablaKardex extends javax.swing.JFrame {
         actualizarTabla();
         calcularPromedio();
     }//GEN-LAST:event_btnModificarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+       int filaSeleccionada = tablaDatos.getSelectedRow();
+
+    if (filaSeleccionada >= 0 && filaSeleccionada < KardexDatos.listasMaterias.size()) {
+        int confirmacion = JOptionPane.showConfirmDialog(
+            this,
+            "¿Estás seguro de eliminar esta materia?",
+            "Confirmar eliminación",
+            JOptionPane.YES_NO_OPTION
+        );
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            // Eliminar del ArrayList
+            KardexDatos.listasMaterias.remove(filaSeleccionada);
+
+            // Actualizar la tabla
+            actualizarTabla();
+        }
+    } else {
+        JOptionPane.showMessageDialog(this, "Selecciona una fila válida para eliminar.");
+    }
+ 
+    }//GEN-LAST:event_btnEliminarActionPerformed
     
     
     
     /**
-     * Esta metodo permite actualizar la tabla con los datos que tiene el arreglo 
-     * en la clase Kardex
+     * Esta metodo permite actualizar la tabla con los listasMaterias que tiene el arreglo 
+ en la clase Kardex
      */
     private void actualizarTabla(){
         // Formato de la tabla
         String columnas[] = {"Materia","Semestre","Calificacion"};
+        
+        String matrizDatos[][] = new String [KardexDatos.listasMaterias.size()][];
+        int index = 0;
+        for (Materias materia: KardexDatos.listasMaterias){
+            matrizDatos[index] = materia.aArreglo();
+            index++;
+        }
         //Manda a llamar el formulario para la tabla
-        DefaultTableModel model = new DefaultTableModel(KardexDatos.datos, columnas);
+        DefaultTableModel model = new DefaultTableModel(matrizDatos, columnas);
         tablaDatos.setModel(model); 
     }
     
         // EN este método se calcula el promedio del arreglo 
         public void calcularPromedio() {
-        double suma = 0;
-        int contador = 0;
-
-        for (int i = 0; i < datos.length; i++) {
-            String valor = datos[i][2];
-                if (valor != null && !valor.isEmpty()) {
-                    try {
-                    double nota = Double.parseDouble(valor);
-                    suma += nota;
-                    contador++;
-                } catch (NumberFormatException e) {
-            }
+        float promedio = 0f;
+        int contador = KardexDatos.listasMaterias.size();
+        for (Materias materia: KardexDatos.listasMaterias) {
+            promedio += materia.getCalificaciones();
         }
-    }
-
-        double promedio = contador > 0 ? suma / contador : 0;
+        promedio = contador >0 ? promedio/contador : 0;
         jLabel1.setText(String.format("Promedio: %.2f", promedio));
 }
 
@@ -213,6 +236,7 @@ public class TablaKardex extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;

@@ -69,7 +69,6 @@ public class FilaTortillas {
                     // Caso 2
                     else atras.vieneAtras = buscado.vieneAtras;
                 }
-                
                 break;
             case 5:
                 java.util.Stack<String> pila = new java.util.Stack<>();

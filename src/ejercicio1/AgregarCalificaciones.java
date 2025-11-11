@@ -6,6 +6,7 @@
 package ejercicio1;
 
 import ejercicio1.datos.KardexDatos;
+import ejercicio1.datos.Materias;
 
 /**
  *
@@ -144,21 +145,24 @@ public class AgregarCalificaciones extends javax.swing.JDialog {
     //Metodo para Guardar elementos
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         String materia = jTextField1.getText();
-    String semestre = jTextField3.getText();
-    String calificaciones = jTextField4.getText();
+        int semestre = Integer.parseInt(jTextField3.getText());
+        int calificaciones = Integer.parseInt(jTextField4.getText());
 
     if (modoModificar) {
-        // Modificar el arreglo en la posición correspondiente
-        KardexDatos.datos[filaModificar][0] = materia;
-        KardexDatos.datos[filaModificar][1] = semestre;
-        KardexDatos.datos[filaModificar][2] = calificaciones;
-    } else {
-        // Solo agregar si no estás modificando
-        KardexDatos.datos[KardexDatos.index][0] = materia;
-        KardexDatos.datos[KardexDatos.index][1] = semestre;
-        KardexDatos.datos[KardexDatos.index][2] = calificaciones;
-        KardexDatos.index++;
-    }
+            // Modificar una materia existente
+            Materias materiaExistente = KardexDatos.listasMaterias.get(filaModificar);
+            materiaExistente.setMateria(materia);
+            materiaExistente.setSemestre(semestre);
+            materiaExistente.setCalificaciones(calificaciones);
+        } else {
+            // Agregar nueva materia
+            Materias nuevaMateria = new Materias();
+            nuevaMateria.setMateria(materia);
+            nuevaMateria.setSemestre(semestre);
+            nuevaMateria.setCalificaciones(calificaciones);
+            KardexDatos.listasMaterias.add(nuevaMateria);
+        }
+
 
     this.dispose();
 
