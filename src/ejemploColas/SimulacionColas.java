@@ -168,25 +168,29 @@ public class SimulacionColas extends javax.swing.JFrame {
         String b = ""; // Inicializamos para evitar errores
         if (!jTextField1.getText().equals("")) {
             b = jTextField1.getText();
-            jTextField1.setText("");
+            jTextField1.setText(jTextField2.getText());
+            jTextField2.setText(jTextField3.getText());
+            jTextField3.setText(jTextField4.getText());
+            jTextField4.setText(jTextField5.getText());
+            jTextField5.setText("");
             jTextField6.setText(b);
-        } else if (!jTextField2.getText().equals("")) {
+       /* } else if (!jTextField2.getText().equals("")) {
             b = jTextField2.getText();
-            jTextField2.setText("");
+            jTextField2.setText(jTextField3.getText());
             jTextField6.setText(b);
         } else if (!jTextField3.getText().equals("")) {
             b = jTextField3.getText();
-            jTextField3.setText("");
+            jTextField3.setText(jTextField4.getText());
             jTextField6.setText(b);
         } else if (!jTextField4.getText().equals("")) {
             b = jTextField4.getText();
-            jTextField4.setText("");
+            jTextField4.setText(jTextField5.getText());
             jTextField6.setText(b);
         } else if (!jTextField5.getText().equals("")) {
             b = jTextField5.getText();
             jTextField5.setText("");
-            jTextField6.setText(b);
-        } else {
+            jTextField6.setText(b);*/
+        } else {jTextField6.setText("No hay nada chavo");
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
